@@ -1,0 +1,1 @@
+g++ -Wall -std=c++17 Amount.cpp Groceries.cpp Products.cpp Signal.cpp main.cpp -c

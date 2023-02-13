@@ -1,11 +1,14 @@
 #pragma once
 #include"Products.hpp"
-
-class Gorceries: Products {
+#include<chrono>
+#include<ctime>
+#include<string>
+class Gorceries: public Products {
     public: 
-        Gorceries(std::string, int, int, int);
+        Gorceries(std::string, int, std::tm expDate);
         ~Gorceries();  
-        int getExpireDate();
+        std::chrono::system_clock::time_point getExpireDate();
+        std::string getExpireDateString();
     private:
-        int expireDate;
+        std::tm expireDate;
 };

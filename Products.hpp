@@ -7,11 +7,9 @@ class Products {
         std::string name;
         
     public:
-        Products(std::string, int, int);
+        Products(std::string, int);
         Products();
-        ~Products();
         std::string getName();
         Amount amount;
-        Amount signalAmount;
 };
 
