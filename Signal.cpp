@@ -2,8 +2,8 @@
 #include"Amount.hpp"
 #include<string>
 
-Signal::Signal(std::string name, int am) {
-    name = name;
+Signal::Signal(std::string iname, int am) {
+    name = iname;
     amount = Amount(am);
 };
 

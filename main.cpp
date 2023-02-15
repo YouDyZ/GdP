@@ -5,6 +5,7 @@
 #include<fstream>
 #include<chrono>
 #include<ctime>
+#include<algorithm>
 #include"Groceries.hpp"
 #include"Products.hpp"
 #include"Signal.hpp"
@@ -20,6 +21,7 @@ void readFromFile(std::string, bool);
 void checkToEat();
 void checkAmountLow();
 void readSignalAmount();
+void reWriteSignalAsNew();
 std::chrono::system_clock::time_point today;
 std::vector<Products> prodcuts;
 std::vector<Gorceries> gorceries;
@@ -31,7 +33,6 @@ int main() {
     init();
     do {
         int input = menue();
-        std::cout << input << std::endl;
         switch (input) {
             case 1:
                 addNewItem();
@@ -73,63 +74,127 @@ void readFromFile(std::string fileName, bool append = false) {
     std::vector<Products> tempProd;
     std::vector<Gorceries> tempGorc;
 
+    std::string itemName;
+    std::string expDate;
+    bool expIsProd = false;
+    int amount;
+
+    bool reWriteSignal = false;
+
     while (std::getline(file, fileLine)) {
         std::stringstream sstream(fileLine);
         std::string valueType, value;
-        sstream >> valueType;
-        sstream >> value;
+        sstream >> valueType >> value;
 
-        std::string itemName;
-        std::string expDate;
-        int amount;
-
-        //TODO DEBUG
-        std::cout << "valueType: " << value;
-
-        if((value != "")) {
+        if(value != "") {
             if(valueType == "Name:") {
                 itemName = value;
             } else if(valueType == "Ablaufdatum:") {
-                expDate = value;
+                if(value == "keines") {
+                    expIsProd = true;
+                    expDate = "";
+                } else if(value == "") {
+                    expIsProd = true;
+                    expDate = "";
+                } else {
+                    expDate = value;
+                }
+                
             } else if(valueType == "Menge:") {
                 amount = stoi(value);
             } else {
                 std::cout << "Fehler in der Datei. Bitte Datei: '" << fileName << "' überprüfen!" << std::endl;
                 return;
             }
-        }
-
-            //gegenstand hat meldebestand
+        } else {
             bool hasSignalAmount = false;
-            for (int i = 0; i < signalAmounts.size(); i++) {
-                if(itemName == signalAmounts.at(i).getName()) {
-                    hasSignalAmount = true;
+            if (signalAmounts.size() > 0) {
+                for (long unsigned int i = 0; i < signalAmounts.size(); i++) {
+                    if(itemName == signalAmounts.at(i).getName()) {
+                        hasSignalAmount = true;
+                    }
                 }
             }
+            
             int setSignalAmount;
             if(!hasSignalAmount) {
                 do {
                     std::cout << "Bitte geben Sie ein Meldebestand für " << itemName << " ein!" << std::endl;
                     std::cin >> setSignalAmount;
+                    if(!reWriteSignal) {
+                        bool confirmSignal = false;
+                        char inConfirmSignal;
+                        do {
+                            std::cout << "Möchten Sie die Signal.txt neu erzeugen? [Y/N]" << std::endl;
+                            std::cin >> inConfirmSignal;
+                            if(inConfirmSignal == 'y' || inConfirmSignal == 'Y') {
+                                reWriteSignal = true;
+                                confirmSignal = true;
+                            } else if(inConfirmSignal == 'n' || inConfirmSignal == 'N') {
+                                confirmSignal = true;
+                            }
+                        } while (!confirmSignal);
+                    }
                 } while(setSignalAmount < 0);
-                signalAmounts.push_back(Signal(itemName, setSignalAmount));
+                Signal tempSignl = Signal(itemName, setSignalAmount);
+                signalAmounts.push_back(tempSignl);
             }
 
-            if(expDate.size() != 0 || expDate != "keines") {
+            if(!expIsProd) {
                 //ist ein Gorcerie
                 int expDateDay, expDateMonth,expDateYear;
                 char dummy1, dummy2;
-                std::stringstream sstream(expDate);
 
+                std::stringstream sstream(expDate);
                 sstream >> expDateDay >> dummy1 >> expDateMonth >> dummy2 >> expDateYear;
-                gorceries.push_back(Gorceries(itemName, amount, {0,0,0, expDateDay, expDateMonth-1, expDateYear-1900}));
+                std::tm expDatetm = {0,0,0, expDateDay, expDateMonth-1, expDateYear-1900};
+                //gegenstand bereits vorhanden.
+
+                bool added = false;
+                
+                for(long unsigned int k = 0; k < gorceries.size(); k++) {
+                    if(gorceries.at(k).getName() == itemName) {
+                        if(gorceries.at(k).getExpireDate() == std::chrono::system_clock::from_time_t(std::mktime({&expDatetm}))) {
+                            if(!added) {
+                                gorceries.at(k).amount.increase(amount);
+                                added = true;
+                            }
+                        }
+                    }
+                } 
+                if(!added) {
+                    gorceries.push_back(Gorceries(itemName, amount, expDatetm));
+                }
+                
             } else {
-                prodcuts.push_back(Products(itemName, amount));
+                if(prodcuts.size() != 0) {
+                    bool added = false;
+                    for(long unsigned int k = 0; k < prodcuts.size(); k++) {
+                        if(prodcuts.at(k).getName() == itemName) {
+                            
+                            if(!added) {
+                                prodcuts.at(k).amount.increase(amount);
+                                added = true;
+                            }
+                        }
+                    }
+                    if(!added) {
+                        prodcuts.push_back(Products(itemName, amount));
+                    }
+                } else {
+                    prodcuts.push_back(Products(itemName, amount));
+                }
+                
             }
             //reset for next loop
-                    std::string itemName = "";
-                    std::string expDate = "";
-                    amount = 0;
+            itemName = "";
+            expDate = "";
+            amount = 0;
+            expIsProd = false;
+        }
+    }
+    if(reWriteSignal) {
+        reWriteSignalAsNew();
     }
 }
 
@@ -138,8 +203,9 @@ void readFromFile(std::string fileName, bool append = false) {
  * Listen aktuallisieren
  */
 void init() {
-    std::cout << "Daten werden gelesen aus data.txt" << std::endl;
+    std::cout << "Signalwerte werden gelesen" << std::endl;
     readSignalAmount();
+    std::cout << "Daten werden gelesen aus data.txt" << std::endl;
     readFromFile("data.txt");
 
     std::cout << "Liste mit bald zu essenden Produkten wird aktuallisiert" << std::endl;
@@ -152,7 +218,7 @@ void init() {
 };
 
 
-//[ ] Daten auf Dopplung überpüfen
+
 void readSignalAmount() {
     std::ifstream file("singal.txt");
     std::string fileLine;
@@ -160,41 +226,56 @@ void readSignalAmount() {
     std::vector<int> removeAfter;
     while (std::getline(file, fileLine)) {
         std::stringstream sstream(fileLine);
-        std::string valueName;
-        std::string value;
-        sstream >> valueName;
-        sstream >> value;
+        std::string valueName, value;
+        sstream >> valueName >> value;;
         if(signalAmounts.size() == 0) {
             signalAmounts.push_back(Signal(valueName, std::stoi(value)));
         } else {
             //Dopplung Überpüfen
-            for (int i = 0; i < signalAmounts.size(); i++) {
-                if (signalAmounts.at(i).getName() == valueName && signalAmounts.at(i).getSignalAmount() == std::stoi(value)) {
-                    std::cout << "Dopplung bei den Signalwerten vorhanden. Bitte Dopplung enfernen um diese Meldung zu deaktivieren." << std::endl <<  "Item name: " << valueName << std::endl;
+            bool added = false;
+            for (long unsigned int i = 0; i < signalAmounts.size(); i++) {
+                if ((signalAmounts.at(i).getName() == valueName) && (signalAmounts.at(i).getSignalAmount() == std::stoi(value))) {
+                    std::cout << "Dopplung bei den Signalwerten vorhanden. - Bitte Dopplung enfernen um diese Meldung zu deaktivieren." << std::endl <<  "Item name: " << valueName << std::endl;
                     if(!reWriteFile) {
                         char reWrite;
+                        bool goNext = false;
                         do {
                             std::cout << "Wollen Sie die Datei im Anschluss neu erzeugen? [Y/N]" << std::endl;
                             std::cin >> reWrite;
-                        } while (reWrite == 'Y' || reWrite == 'y' || reWrite == 'n' || reWrite == 'N');
-                        if(reWrite == 'Y' || reWrite == 'y') {
-                            reWriteFile = true;
-                        }
+                            if(reWrite == 'Y' || reWrite == 'y') {
+                                reWriteFile = true;
+                                goNext = true;
+                            } else if(reWrite == 'N' || reWrite == 'n') {
+                                goNext = true;
+                            }
+                        } while (!goNext);
                     }
                 } else if(signalAmounts.at(i).getName() == valueName) {
                     int settedSignal;
                     do {
-                        std::cout << "Dopplung bei den Signalwerten vorhanden. Unterschiedliche Signalwerte. Bitte auswählen" << std::endl;
+                        std::cout << "Dopplung bei den Signalwerten vorhanden. - Unterschiedliche Signalwerte. Bitte auswählen" << std::endl;
                         std::cout << valueName << std::endl;
                         std::cout << "1: " << value << std::endl;
                         std::cout << "2: " << signalAmounts.at(i).getSignalAmount() << std::endl;
                         std::cin >> settedSignal;
                     } while (!(settedSignal == 1 || settedSignal == 2));
                     if(settedSignal == 1) {
-                        //TODO Remove after finishing all loops
                         removeAfter.push_back(i);
                         signalAmounts.push_back(Signal(valueName, std::stoi(value)));
+                        added = true;
                     } 
+                    if(added) {
+                        //die zu entfernenden sortieren, von groß nach klein
+                        std::sort(removeAfter.begin(), removeAfter.end(), std::greater<int>());
+                        //Dopplung enfternen
+                        std::vector<int>::iterator last = std::unique(removeAfter.begin(), removeAfter.end());
+                        removeAfter.erase(last, removeAfter.end());
+                        
+                        //von uprünglichem vector enfertnen;
+                        for(long unsigned int k = 0; k < removeAfter.size(); k++) {
+                           signalAmounts.erase(signalAmounts.begin() + removeAfter.at(k)); 
+                        }
+                    }
                     if(!reWriteFile) {
                         char reWrite;
                         do {
@@ -205,29 +286,34 @@ void readSignalAmount() {
                             reWriteFile = true;
                         }
                     }
-                } else {
-                    signalAmounts.push_back(Signal(valueName, std::stoi(value)));
-                }
+                } 
+            }
+            if (!added) {
+                signalAmounts.push_back(Signal(valueName, std::stoi(value)));
             }
         }
     }
     if(reWriteFile) {
-        std::cout << "signal.txt wird neu erzeugt..." << std::endl;
-        remove("singal.txt");
-        std::ofstream fout;
-        fout.open("singal.txt");
-        for (int i = 0; i < signalAmounts.size(); i++) {
-            fout << signalAmounts.at(i).getName() << " " << signalAmounts.at(i).getSignalAmount() << std::endl;
-        }
-        fout.close();
-        std::cout << "signal.txt erfolgreich erneut erzeugt" << std::endl;
+        reWriteSignalAsNew();
     }
 };
+
+void reWriteSignalAsNew() {
+    std::cout << "signal.txt wird neu erzeugt..." << std::endl;
+    remove("singal.txt");
+    std::ofstream fout;
+    fout.open("singal.txt");
+    for (long unsigned int i = 0; i < signalAmounts.size(); i++) {
+        fout << signalAmounts.at(i).getName() << " " << signalAmounts.at(i).getSignalAmount() << std::endl;
+    }
+    fout.close();
+    std::cout << "signal.txt erfolgreich erneut erzeugt" << std::endl;
+}
 
 void checkToEat() {
     std::vector<Gorceries> nearExpDate;
     std::chrono::system_clock::time_point nowInSevenDays = today + std::chrono::seconds(7*24*60*60);
-    for (int i = 0; i < gorceries.size(); i++) {
+    for (long unsigned int i = 0; i < gorceries.size(); i++) {
         Gorceries prod = gorceries.at(i);
         if(prod.getExpireDate() > nowInSevenDays) {
             nearExpDate.push_back(prod);
@@ -240,7 +326,7 @@ void checkToEat() {
     std::ofstream fout;
     fout.open("baldEssen.txt");
     fout << "--Bald zu essende Produkte--" << std::endl;
-    for (int i = 0; i < nearExpDate.size(); i++) {
+    for (long unsigned int i = 0; i < nearExpDate.size(); i++) {
         fout << "Produkt: " << nearExpDate.at(i).getName() << std::endl;
         fout << "Anzahl: " << nearExpDate.at(i).amount.get() << std::endl;
         fout << "Ablaufdatum: " << nearExpDate.at(i).getExpireDateString() << std::endl;
@@ -255,8 +341,14 @@ void checkAmountLow() {
     std::ofstream fout;
     fout.open("nachkaufen.txt");
     fout << "--Unerderbliche Produkte--" << std::endl;
-    for (int i = 0; i < prodcuts.size(); i++) {
-        if(prodcuts.at(i).amount.get()) {
+    for (long unsigned int i = 0; i < prodcuts.size(); i++) {
+        int signalAm;
+        for(long unsigned int k = 0; k < signalAmounts.size(); k++) {
+            if(signalAmounts.at(k).getName() == prodcuts.at(i).getName()) {
+                signalAm = signalAmounts.at(k).getSignalAmount();
+            }
+        }
+        if(prodcuts.at(i).amount.get() < signalAm) {
             fout << "Produkt: " << prodcuts.at(i).getName() << std::endl;
             fout << "Anzahl: " << prodcuts.at(i).amount.get() << std::endl;
             fout << "" << std::endl;
@@ -264,8 +356,14 @@ void checkAmountLow() {
     }
     fout << "" << std::endl;
     fout << "--Verderbliche Produkte--" << std::endl;
-    for (int i = 0; i < gorceries.size(); i++) {
-        if(gorceries.at(i).amount.get() < 200) {
+    for (long unsigned int i = 0; i < gorceries.size(); i++) {
+        int signalAm;
+        for(long unsigned int k = 0; k < signalAmounts.size(); k++) {
+            if(signalAmounts.at(k).getName() == gorceries.at(i).getName()) {
+                signalAm = signalAmounts.at(k).getSignalAmount();
+            }
+        }
+        if(gorceries.at(i).amount.get() < signalAm) {
             fout << "Produkt: " << gorceries.at(i).getName() << std::endl;
             fout << "Anzahl: " << gorceries.at(i).amount.get() << std::endl;
             fout << "Ablaufdatum: " << gorceries.at(i).getExpireDateString() << std::endl;
@@ -278,13 +376,12 @@ void checkAmountLow() {
 
 int menue() {
     int input;
-    //[ ] Datenüberprüfung int
     do {
         log("--------------------------------", true);
         log("1: Neues Item einfuegen", true);
         log("2: Items verbrauchen", true);
         log("3: Items in Datei Speichern", true);
-        log("4: Items aus Datei einlesen");
+        log("4: Items aus Datei einlesen", true);
         log("0: Exit", true);
         log("--------------------------------", true);
         std::cin >> input;
@@ -295,12 +392,16 @@ int menue() {
 void addNewItem() {
     bool isGrocery = false;
     char input;
-    bool succses = false;
+    bool exit = false;
+    bool next = false;
     do {
         do {
             std::cout << "Ist das Item verderblich? [Y/N]"<<std::endl;
             std::cin >> input;
-        } while(input == 'Y' || input == 'y' || input == 'n' || input == 'N');
+            if(input == 'Y' || input == 'y' || input == 'n' || input == 'N') {
+                next = true;
+            };
+        } while(!next);
         if(input == 'Y' || input == 'y') {
             isGrocery = true;     
         }
@@ -339,30 +440,63 @@ void addNewItem() {
             std::tm expDate;
             do {
                 char in;
-                bool formatRight = false;
-                do {
-                    std::cout << "Wann läuft das Produkt ab? "<< std::endl << "Tag: ";
-                    std::cin >> expDateDay;
-                    std::cout << "Moant: ";
-                    std::cin >> expDateMonth;
-                    std::cout << "Jahr: ";
-                    std::cin >> expDateYear;
-                    expDate = {0,0,0, expDateDay, expDateMonth-1, expDateYear-1900};
-                } while(!formatRight);
+                std::cout << "Wann läuft das Produkt ab? "<< std::endl << "Tag: ";
+                std::cin >> expDateDay;
+                std::cout << "Moant: ";
+                std::cin >> expDateMonth;
+                std::cout << "Jahr: ";
+                std::cin >> expDateYear;
+                expDate = {0,0,0, expDateDay, expDateMonth-1, expDateYear-1900};
                 std::cout << "Produkt läuft "   << expDate.tm_mday << "." 
                                                 << expDate.tm_mon + 1  << "." 
-                                                << expDate.tm_year + 1990 
-                                                << "ab? [Y/N]" <<std::endl;
+                                                << expDate.tm_year + 1900
+                                                << " ab? [Y/N]" <<std::endl;
                 std::cin >> in;
                 if(in == 'y' || in == 'Y') {
                     confirm = true;
                 }
             } while (!confirm);
-            gorceries.push_back(Gorceries(prodName, prodAmount, expDate) );
+
+            //check item doubled
+            bool added = false;
+            for (long unsigned int k = 0; k < gorceries.size(); k++) {
+                if(gorceries.at(k).getName() == prodName) {
+                    if(std::chrono::system_clock::from_time_t(std::mktime(&expDate)) == gorceries.at(k).getExpireDate()) { 
+                        gorceries.at(k).amount.increase(prodAmount);
+                        added = true;
+                        std::cout << "Gegenstand mit gleichem Namen und Gleichen Ablaufdatum im system, Gegenstände wurden zusammengeführt" << std::endl;
+                    }
+                }
+            }
+            if(!added) {
+                gorceries.push_back(Gorceries(prodName, prodAmount, expDate));
+            }
+            
         } else {
-            prodcuts.push_back(Products(prodName, prodAmount));
+            bool added = false;
+            for(long unsigned int k = 0; k < prodcuts.size(); k++) {
+                if(prodcuts.at(k).getName() == prodName) {
+                    prodcuts.at(k).amount.increase(prodAmount);
+                    std::cout<<"gegenstand breits vorhanden. Gelagerter Gegenstand wurde erhöht!" << std::endl;
+                }
+            }
+            if(!added) {
+                prodcuts.push_back(Products(prodName, prodAmount));
+            }
+            
         }
-    } while (!succses);
+        next = false;
+        do {
+            std::cout << "Weiteres Item hinzufügen?" <<std::endl;
+            std::cin >> input;
+            if(input == 'Y' || input == 'y') {
+                next = true;
+            } else if(input == 'N' || input == 'n') {
+                next = true;
+                exit = true;
+            };
+        } while(!next);
+    } while (!exit);
 
 };
 
@@ -400,7 +534,7 @@ void useItem() {
     } else {
         int listNum = 1;
         if(resProd.size() != 0 ) {
-            for (int k = 0; k < resProd.size(); k++) {
+            for (long unsigned int k = 0; k < resProd.size(); k++) {
                 Products prod = prodcuts.at(resProd.at(k));
                 std::cout   << listNum
                             << ": " 
@@ -413,7 +547,7 @@ void useItem() {
             }
         }
         if(resGroc.size() != 0) {
-            for (int k = 0; k < resGroc.size(); k++) {
+            for (long unsigned int k = 0; k < resGroc.size(); k++) {
                 Gorceries prod = gorceries.at(resGroc.at(k));
                 std::cout   << listNum
                             << ": " 
@@ -425,7 +559,7 @@ void useItem() {
                 listNum++;
             }
         }
-        int selectItem;
+        long unsigned int selectItem;
         bool next = false;
         do {
             std::cout << "Bitte Nummer eingeben!" << std::endl;
@@ -479,7 +613,7 @@ void useItem() {
                     }
                 } else {
                     int max = prodcuts.at(itemIndex).amount.get();
-                    if(decreaseAm > max) {
+                    if(decreaseAm > max)  {
                         std::cout << "Sie koennen nicht mehr verauchen, als was Sie haben!" << std::endl;
                     } else if(decreaseAm < 0) {
                         char confirmAdd;
@@ -540,9 +674,9 @@ void saveItems() {
     }
     
     if(gorceries.size() != 0) {
-        fout << "--Nicht verderbliche Produkte--" << std::endl;
+        fout << "--Verderbliche Produkte--" << std::endl;
         fout << std::endl;
-        for (int i = 0; i < gorceries.size(); i++) {
+        for (long unsigned int i = 0; i < gorceries.size(); i++) {
             fout << "Produkt: " << gorceries.at(i).getName() << std::endl;
             fout << "Anzahl: " << gorceries.at(i).amount.get() << std::endl;
             fout << "Haltbar bis: " << gorceries.at(i).getExpireDateString() << std::endl;
@@ -562,7 +696,6 @@ void insertFromFile() {
     do {
         std::cout << "Geben Sie einen Dateinamen an, dateiendung nicht Vergessen!" << std::endl;
         std::cin >> fileName;
-        //[x] Namenvalidierung auf . und existierende Files
         std::fstream file(fileName, std::ios::in);
         if(file) {
             nameValid = true;

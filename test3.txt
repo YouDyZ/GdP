@@ -1,0 +1,120 @@
+--Nicht verderbliche Produkte--
+
+Produkt: Druckerapier
+Anzahl: 1882
+
+Produkt: Toilettenpapier
+Anzahl: 4302
+
+Produkt: Kerzen
+Anzahl: 7170
+
+Produkt: Batterien
+Anzahl: 3406
+
+Produkt: Geschirrspueltaps
+Anzahl: 3248
+
+
+--Verderbliche Produkte--
+
+Produkt: Fanta
+Anzahl: 1422
+Haltbar bis: 25.2.2116
+
+Produkt: Spinat
+Anzahl: 1686
+Haltbar bis: 5.12.2114
+
+Produkt: Spinat
+Anzahl: 626
+Haltbar bis: 16.10.2115
+
+Produkt: Spinat
+Anzahl: 1212
+Haltbar bis: 8.3.2115
+
+Produkt: Spinat
+Anzahl: 722
+Haltbar bis: 15.6.2114
+
+Produkt: Spinat
+Anzahl: 1424
+Haltbar bis: 22.3.2115
+
+Produkt: Fisch
+Anzahl: 804
+Haltbar bis: 2.10.2114
+
+Produkt: Spinat
+Anzahl: 460
+Haltbar bis: 23.1.2114
+
+Produkt: Fisch
+Anzahl: 70
+Haltbar bis: 28.4.2115
+
+Produkt: Spinat
+Anzahl: 1358
+Haltbar bis: 24.7.2115
+
+Produkt: Brot
+Anzahl: 1172
+Haltbar bis: 20.1.2114
+
+Produkt: Fisch
+Anzahl: 1576
+Haltbar bis: 26.5.2115
+
+Produkt: Fanta
+Anzahl: 1482
+Haltbar bis: 1.5.2115
+
+Produkt: Fanta
+Anzahl: 532
+Haltbar bis: 13.2.2114
+
+Produkt: Spinat
+Anzahl: 518
+Haltbar bis: 15.10.2115
+
+Produkt: Äpfel
+Anzahl: 20
+Haltbar bis: 11.10.2114
+
+Produkt: Fisch
+Anzahl: 660
+Haltbar bis: 16.9.2114
+
+Produkt: Äpfel
+Anzahl: 604
+Haltbar bis: 10.10.2115
+
+Produkt: Brot
+Anzahl: 1018
+Haltbar bis: 22.2.2115
+
+Produkt: Brot
+Anzahl: 478
+Haltbar bis: 9.8.2115
+
+Produkt: Brot
+Anzahl: 1354
+Haltbar bis: 2.10.2114
+
+Produkt: Spinat
+Anzahl: 1254
+Haltbar bis: 24.4.2114
+
+Produkt: Äpfel
+Anzahl: 842
+Haltbar bis: 4.2.2114
+
+Produkt: Bananen
+Anzahl: 456
+Haltbar bis: 18.8.2114
+
+Produkt: Brot
+Anzahl: 1498
+Haltbar bis: 5.10.2115
+

@@ -6,7 +6,6 @@
 class Gorceries: public Products {
     public: 
         Gorceries(std::string, int, std::tm expDate);
-        ~Gorceries();  
         std::chrono::system_clock::time_point getExpireDate();
         std::string getExpireDateString();
     private:

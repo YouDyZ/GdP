@@ -1,0 +1,11 @@
+Druckerapier 25
+Toilettenpapier 25
+Kerzen 50
+Batterien 21
+Geschirrspueltaps 25
+Fanta 512
+Spinat 31
+Fisch 0
+Brot 145
+Äpfel 4
+Bananen 3154

@@ -1,0 +1,2 @@
+Edgecase: Invalid Datum
+Reaktion: Datum wird basierend auf dem Input berechnet

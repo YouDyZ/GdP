@@ -18,16 +18,7 @@ void Amount::increase(int am) {
 };
 
 void Amount::decrease(int am) {
-    int fut = count - am;
-    if(count > fut) {
-        std::cout << "Mehr verbraucht als vorhanden!" << std::endl;
-        return;
-    } 
-    if( count == fut) {
-        std::cout<< "Gegenstand verbraucht!" << std::endl; 
-        return;
-    }
-    count = fut;
+    count = count - am;
 };
 
 

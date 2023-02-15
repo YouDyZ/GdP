@@ -1,5 +1,11 @@
 --Unerderbliche Produkte--
 
 --Verderbliche Produkte--
-Produkt: 
-Anzahl: 129
+Produkt: Fanta
+Anzahl: 266
+Ablaufdatum: 13.2.2024
+
+Produkt: Bananen
+Anzahl: 228
+Ablaufdatum: 18.8.2024
+

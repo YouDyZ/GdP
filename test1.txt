@@ -1,0 +1,180 @@
+--Nicht verderbliche Produkte--
+
+Produkt: Druckerapier
+Anzahl: 557
+
+Produkt: Toilettenpapier
+Anzahl: 911
+
+Produkt: Toilettenpapier
+Anzahl: 129
+
+Produkt: Kerzen
+Anzahl: 389
+
+Produkt: Kerzen
+Anzahl: 27
+
+Produkt: Toilettenpapier
+Anzahl: 80
+
+Produkt: Batterien
+Anzahl: 554
+
+Produkt: Kerzen
+Anzahl: 959
+
+Produkt: Kerzen
+Anzahl: 291
+
+Produkt: Geschirrspueltaps
+Anzahl: 830
+
+Produkt: Toilettenpapier
+Anzahl: 21
+
+Produkt: Kerzen
+Anzahl: 690
+
+Produkt: Toilettenpapier
+Anzahl: 710
+
+Produkt: Batterien
+Anzahl: 432
+
+Produkt: Druckerapier
+Anzahl: 151
+
+Produkt: Geschirrspueltaps
+Anzahl: 794
+
+Produkt: Kerzen
+Anzahl: 764
+
+Produkt: Kerzen
+Anzahl: 213
+
+Produkt: Kerzen
+Anzahl: 252
+
+Produkt: Druckerapier
+Anzahl: 23
+
+Produkt: Druckerapier
+Anzahl: 210
+
+Produkt: Toilettenpapier
+Anzahl: 212
+
+Produkt: Toilettenpapier
+Anzahl: 88
+
+Produkt: Batterien
+Anzahl: 150
+
+Produkt: Batterien
+Anzahl: 567
+
+
+--Verderbliche Produkte--
+
+Produkt: Fanta
+Anzahl: 711
+Haltbar bis: 25.26.2114
+
+Produkt: Spinat
+Anzahl: 843
+Haltbar bis: 5.12.2114
+
+Produkt: Spinat
+Anzahl: 313
+Haltbar bis: 16.22.2114
+
+Produkt: Spinat
+Anzahl: 606
+Haltbar bis: 8.15.2114
+
+Produkt: Spinat
+Anzahl: 361
+Haltbar bis: 15.6.2114
+
+Produkt: Spinat
+Anzahl: 712
+Haltbar bis: 22.15.2114
+
+Produkt: Fisch
+Anzahl: 402
+Haltbar bis: 2.10.2114
+
+Produkt: Spinat
+Anzahl: 230
+Haltbar bis: 23.1.2114
+
+Produkt: Fisch
+Anzahl: 35
+Haltbar bis: 28.16.2114
+
+Produkt: Spinat
+Anzahl: 679
+Haltbar bis: 24.19.2114
+
+Produkt: Brot
+Anzahl: 586
+Haltbar bis: 20.1.2114
+
+Produkt: Fisch
+Anzahl: 788
+Haltbar bis: 26.17.2114
+
+Produkt: Fanta
+Anzahl: 741
+Haltbar bis: 1.17.2114
+
+Produkt: Fanta
+Anzahl: 266
+Haltbar bis: 13.2.2114
+
+Produkt: Spinat
+Anzahl: 259
+Haltbar bis: 15.22.2114
+
+Produkt: Äpfel
+Anzahl: 10
+Haltbar bis: 11.10.2114
+
+Produkt: Fisch
+Anzahl: 330
+Haltbar bis: 16.9.2114
+
+Produkt: Äpfel
+Anzahl: 302
+Haltbar bis: 10.22.2114
+
+Produkt: Brot
+Anzahl: 509
+Haltbar bis: 22.14.2114
+
+Produkt: Brot
+Anzahl: 239
+Haltbar bis: 9.20.2114
+
+Produkt: Brot
+Anzahl: 677
+Haltbar bis: 2.10.2114
+
+Produkt: Spinat
+Anzahl: 627
+Haltbar bis: 24.4.2114
+
+Produkt: Äpfel
+Anzahl: 421
+Haltbar bis: 4.2.2114
+
+Produkt: Bananen
+Anzahl: 228
+Haltbar bis: 18.8.2114
+
+Produkt: Brot
+Anzahl: 749
+Haltbar bis: 5.22.2114
+

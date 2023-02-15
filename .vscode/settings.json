@@ -1,12 +1,12 @@
 {
     "files.associations": {
         "*.ejs": "html",
-        "iostream": "cpp",
         "array": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
         "*.tcc": "cpp",
         "cctype": "cpp",
+        "chrono": "cpp",
         "clocale": "cpp",
         "cmath": "cpp",
         "cstdarg": "cpp",
@@ -14,6 +14,7 @@
         "cstdint": "cpp",
         "cstdio": "cpp",
         "cstdlib": "cpp",
+        "ctime": "cpp",
         "cwchar": "cpp",
         "cwctype": "cpp",
         "deque": "cpp",
@@ -28,6 +29,7 @@
         "numeric": "cpp",
         "optional": "cpp",
         "random": "cpp",
+        "ratio": "cpp",
         "string": "cpp",
         "string_view": "cpp",
         "system_error": "cpp",
@@ -37,6 +39,7 @@
         "fstream": "cpp",
         "initializer_list": "cpp",
         "iosfwd": "cpp",
+        "iostream": "cpp",
         "istream": "cpp",
         "limits": "cpp",
         "new": "cpp",
@@ -44,16 +47,6 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp",
-        "chrono": "cpp",
-        "ctime": "cpp",
-        "ratio": "cpp",
-        "bitset": "cpp",
-        "condition_variable": "cpp",
-        "cstring": "cpp",
-        "map": "cpp",
-        "regex": "cpp",
-        "shared_mutex": "cpp",
-        "cinttypes": "cpp"
+        "typeinfo": "cpp"
     }
 }
