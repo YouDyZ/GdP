@@ -5,6 +5,10 @@ Amount::Amount(int am) {
     count = am;
 };
 
+Amount::Amount () {
+    count = 0;
+}
+
 int Amount::get() {
     return count;    
 };
@@ -20,9 +24,3 @@ void Amount::increase(int am) {
 void Amount::decrease(int am) {
     count = count - am;
 };
-
-
-//Standartkontruktor mit count = 0;
-Amount::Amount () {
-    count = 0;
-}

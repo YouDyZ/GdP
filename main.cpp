@@ -51,12 +51,18 @@ int main() {
                 break;
             default:
                 break;
-    }
+        }
     } while (running);
-    
+    exit();
     return 0;
 };
 
+/**
+ * Simple funktion im das Loggen und damit das Debuggen damit erleichern soll
+ * @brief gibt ein string im std::cout aus.
+ * @param message String der ausgegeben werden soll
+ * @param nl true, wenn im anschluss eine Neue Zeile erstellt werden soll, default: false;
+*/
 void log(std::string message, bool nl = false) {
     std::cout << message;
     if(nl) {
@@ -64,6 +70,14 @@ void log(std::string message, bool nl = false) {
     }
 }
 
+/**
+ * Liest von der Übergebenen Datei die Produkte ein und fügt Sie in den Gorcheries und Products Vektor ein.
+ * @brief Liest von Datei ein und sotiert in Gorceries und Products vector.
+ * @details List aus der übergebenen, im Hauptordner zu befindende Datei ein und untrerscheidet diese im Anschluss anhand des Ablaufdatums ob diese in Ein Verderbliches Produkt sind oder nicht. Sollte es kein Verderbliches Produkt sein wird dies anhand des Fehlenden Ablaufdatum oder Ablaufdatum: keines Erkannt. 
+ * Diese Methode benötigt eine Datei mit der Syntax: Name: [BEZECHNER] \n Menge: [INT] \n Ablaufdatum: [keines|DD.MM.YYYY] *optional
+ * Bei den Objeten wird auf Dopplung, anhand des Name, überprüft, sollte diesen Vorhanden sein bei nicht verderblichen Produkten wird dies aufeinander Addiert, bei Verderblichen gegenständen muss dazu noch das Ablaufdatum übereinstimmen.
+ * Sollte Keine Meldemänge vorhanden sein für dein eingelesenes Produkt, so wird gefragt, welche mänge Verwendet werden soll mit der Option im anschluss die singal.txt, welche als Datenbank für die Meldemängen besteht, neu zu generieren mit allen Aktuell gespeicherten Signalmängen.
+*/
 void readFromFile(std::string fileName, bool append = false) {
     if(!append) {
         prodcuts.clear();
@@ -71,8 +85,6 @@ void readFromFile(std::string fileName, bool append = false) {
     }
     std::ifstream file(fileName);
     std::string fileLine;
-    std::vector<Products> tempProd;
-    std::vector<Gorceries> tempGorc;
 
     std::string itemName;
     std::string expDate;
@@ -199,8 +211,8 @@ void readFromFile(std::string fileName, bool append = false) {
 }
 
 /**
- * Zuerst Signalmängen einlesen, dann alle vorhanden einlesen.
- * Listen aktuallisieren
+ * Initialaufruf für das Programm, aktualisiert dabei die Datein, bei denen der Bestand niedrig ist und welches bald abläuft. Setzt das aktuelle Datum
+ * @brief Initalisiert das Programm
  */
 void init() {
     std::cout << "Signalwerte werden gelesen" << std::endl;
@@ -217,8 +229,12 @@ void init() {
     checkAmountLow();
 };
 
-
-
+/**
+ * Funktion zum Initialen aufrufen der Signalmengen. Mit überprüfung aus Dopplung und und der möglichkeit bei Dopplung den wert, der behalten werden soll auszuwählen.
+ * @brief Funktion zum initialisieren der signalmengen
+ * @pre signal.txt im haupordner mit stuktur: [ITEMNAME] [SIGNALMENGE] \n
+ * @details Die Funktion ist für den Initialaufruf der signalmengen gedacht, wärend sie läuft pusht sie alle Signalmengen als in den vector Signals. Sollte eine Dopplung mit gleichem wert vorhanden sein, kommt eine meldung und die option die signal.txt erneut zu generieren, Am ende der funktion. Bei dopplung mit unterschiedlichen werten, wurd ein wert davon durch die nutzereingabe 1 oder 2 ausgeähl für das jeweilige objekt. ebenfalls die option danach die signal.txt erneut zu erzeugen. Sollte dem einmal zugestimmt wurden sein, taucht die meldung nicht mehr auf. 
+*/
 void readSignalAmount() {
     std::ifstream file("singal.txt");
     std::string fileLine;
@@ -298,6 +314,10 @@ void readSignalAmount() {
     }
 };
 
+/**
+ * Erzeugt eine neue signal.txt mit den aktuellen inhalten des Vektors SignalAmounts
+ * @brief erstellt neue signal.txt
+*/
 void reWriteSignalAsNew() {
     std::cout << "signal.txt wird neu erzeugt..." << std::endl;
     remove("singal.txt");
@@ -310,6 +330,11 @@ void reWriteSignalAsNew() {
     std::cout << "signal.txt erfolgreich erneut erzeugt" << std::endl;
 }
 
+/**
+ * Erzeugt eine Datei mit den Verderblichen gegenständen, die in den nächsten 7 Tagen abläuft.
+ * @brief erstelt baldEssen.txt 
+ * @pre today mit aktuellem datum
+*/
 void checkToEat() {
     std::vector<Gorceries> nearExpDate;
     std::chrono::system_clock::time_point nowInSevenDays = today + std::chrono::seconds(7*24*60*60);
@@ -320,27 +345,29 @@ void checkToEat() {
         }
     }
     std::cout << "Erstelle Datei mit bald verderbenden Produkten..." << std::endl;
-    
-    //[x] Datei aus verderbliche produkten erstellen.
 
     std::ofstream fout;
     fout.open("baldEssen.txt");
     fout << "--Bald zu essende Produkte--" << std::endl;
     for (long unsigned int i = 0; i < nearExpDate.size(); i++) {
-        fout << "Produkt: " << nearExpDate.at(i).getName() << std::endl;
-        fout << "Anzahl: " << nearExpDate.at(i).amount.get() << std::endl;
+        fout << "Name: " << nearExpDate.at(i).getName() << std::endl;
+        fout << "Menge: " << nearExpDate.at(i).amount.get() << std::endl;
         fout << "Ablaufdatum: " << nearExpDate.at(i).getExpireDateString() << std::endl;
     }
     fout.close();
     std::cout << "Datei mit Bald zu essenden Produkten als 'baldEssen.txt' gespeichert!" << std::endl;
 };
 
-
-//[ ] Auf daten aus liste Überarbeiten
+/**
+ * Überprüft die Verderblichen und unverderblichen Produkte in vergleich mit dem Meldebestand der signalAmouts Vector und genertiert darauf basierend eine Datei "nachkaufen.txt" mit den Produkten, die verbaucht werden müssen
+ * @brief schreibt produkte niedriger als meldebstand in nachkaufen.txt
+*/
 void checkAmountLow() {
     std::ofstream fout;
     fout.open("nachkaufen.txt");
-    fout << "--Unerderbliche Produkte--" << std::endl;
+    if(prodcuts.size() > 0) {
+        fout << "--Unerderbliche Produkte--" << std::endl;
+    }
     for (long unsigned int i = 0; i < prodcuts.size(); i++) {
         int signalAm;
         for(long unsigned int k = 0; k < signalAmounts.size(); k++) {
@@ -349,13 +376,18 @@ void checkAmountLow() {
             }
         }
         if(prodcuts.at(i).amount.get() < signalAm) {
-            fout << "Produkt: " << prodcuts.at(i).getName() << std::endl;
-            fout << "Anzahl: " << prodcuts.at(i).amount.get() << std::endl;
+            fout << "Name: " << prodcuts.at(i).getName() << std::endl;
+            fout << "Menge: " << prodcuts.at(i).amount.get() << std::endl;
             fout << "" << std::endl;
         }
     }
-    fout << "" << std::endl;
-    fout << "--Verderbliche Produkte--" << std::endl;
+    //erzeugt leere extra zeile für schönere Trennung 
+    if((prodcuts.size() > 0) && (gorceries.size() > 0)) {
+        fout << "" << std::endl;
+    }
+    if(gorceries.size() > 0) {
+        fout << "--Verderbliche Produkte--" << std::endl;
+    }
     for (long unsigned int i = 0; i < gorceries.size(); i++) {
         int signalAm;
         for(long unsigned int k = 0; k < signalAmounts.size(); k++) {
@@ -364,8 +396,8 @@ void checkAmountLow() {
             }
         }
         if(gorceries.at(i).amount.get() < signalAm) {
-            fout << "Produkt: " << gorceries.at(i).getName() << std::endl;
-            fout << "Anzahl: " << gorceries.at(i).amount.get() << std::endl;
+            fout << "Name: " << gorceries.at(i).getName() << std::endl;
+            fout << "Menge: " << gorceries.at(i).amount.get() << std::endl;
             fout << "Ablaufdatum: " << gorceries.at(i).getExpireDateString() << std::endl;
             fout << "" << std::endl;
         }
@@ -374,6 +406,11 @@ void checkAmountLow() {
     std::cout << "Produkte mit niedrigem Bestand in nachkaufen.txt geschrieben" << std::endl;
 }
 
+/**
+ * erstellt das hauptmenu und nimmt den Input für den ausgeählten punkt. Überprüft ob der ausgeählt punkt teil des menüs ist.
+ * @brief erstelle hauptmenue
+ * @return int des menuepunkt
+*/
 int menue() {
     int input;
     do {
@@ -389,6 +426,9 @@ int menue() {
     return input;
 };
 
+/**
+ * Starte den Programmablauf zum hinzufügen eines neuen Gegenstandes und fügt dieses dem gorceries oder prodcuts vector zu.
+*/
 void addNewItem() {
     bool isGrocery = false;
     char input;
@@ -497,9 +537,13 @@ void addNewItem() {
             };
         } while(!next);
     } while (!exit);
-
 };
 
+/**
+ * Startet den Programmablauf zum verbrauchen eines Gegenstandes
+ * @brief verbraucht einen Gegenstand aus dem Gespeicherten Vectors
+ * @details Erfragt den Namen des zu berauchenden Gegenstandes der verbeaucht werden soll. Sollte es ein Verderblicher gegenstand sein mit mehreren einträgen und unterschiedlichen ablaufdatum wird dem nutzer eine liste aller gefunden gegensänden gegeben mit der anzahl die dieser verhanden ist und der nutzer wählt aus welchen gegensant er verbauchen will. Sollte der verbrauch negativ sein, so wird der Verbauch hinzugefügt nach rückfrage des nutzer, sollte er gleich der vorhanden menge sein, wird der gegenstand komplett veraucht und dem vector enfernt.
+*/
 void useItem() {
     bool confirm = false;
     std::string prodName;
@@ -507,7 +551,7 @@ void useItem() {
         char in;
         std::cout << "Wie ist der Name des Produkts?" << std::endl; 
         std::cin >> prodName;
-        std::cout << "Ist " << prodName << "richtig? [Y/N]" << std::endl;
+        std::cout << "Ist " << prodName << " richtig? [Y/N]" << std::endl;
         std::cin >> in;
 
         if(in == 'y' || in == 'Y') {
@@ -642,6 +686,10 @@ void useItem() {
     }
 };
 
+/**
+ * Legt eine kopie aller aktuellen Daten an und speichert die in einer vom nutzer benannten .txt datei
+ * @brief speichert alle Daten in erfragen Dateiname .txt
+*/
 void saveItems() {
     std::string fileName;
     std::cout << "Datei wird als Textdatei gespeichert!" << std::endl;
@@ -649,7 +697,6 @@ void saveItems() {
     do {
         std::cout << "Geben Sie einen Dateinamen an!" << std::endl;
         std::cin >> fileName;
-        //[x] Namenvalidierung auf . und existierende Files
         std::fstream file(fileName + ".txt", std::ios::in);
         if(file) {
             nameValid = false;
@@ -687,10 +734,12 @@ void saveItems() {
     std::cout << "Datei: " << fileName << ".txt wurde geschrieben" << std::endl; 
 };
 
+/**
+ * liest eine datei vom nutzer ein und fügt diese dem aktuellen bestand zu. Datei sollte die gleiche syntax wie date.txt haben
+ * @brief Liest datei von nutzer ein und entweder ersersetzt alle vohandenen Daten oder fügt Sie hinzu
+*/
 void insertFromFile() {
-    std::string dummy;
-    std::cout << "Bitte Datei in Hauptordner einfuegen." << std::endl << "Weiter";
-    std::cin >> dummy; //Warten Falls Datei noch eingefügt werden muss
+    std::cout << "Bitte Datei in Hauptordner einfuegen." << std::endl;
     bool nameValid = false;
     std::string fileName;
     do {
@@ -726,4 +775,33 @@ void insertFromFile() {
         }
     } while (!next);
     readFromFile(fileName, !overwrite);
+}
+
+/**
+ * Speichert alle aktuellen daten in data.txt für nächste nutzung
+ * @brief erzeugt neue data.txt mit aktuellen werten für nache siztung
+*/
+void exit() {
+    remove("data.txt");
+    std::ofstream fout;
+    fout.open("data.txt");
+    if(prodcuts.size() != 0) {
+        fout << std::endl;
+        for (size_t i = 0; i < prodcuts.size(); i++) {
+            fout << "Name: " << prodcuts.at(i).getName() << std::endl;
+            fout << "Menge: " << prodcuts.at(i).amount.get() << std::endl;
+            fout << "Ablaufdatum: keines" << std::endl;
+            fout << std::endl;
+        };
+    }
+    if(gorceries.size() != 0) {
+        fout << std::endl;
+        for (long unsigned int i = 0; i < gorceries.size(); i++) {
+            fout << "Name: " << gorceries.at(i).getName() << std::endl;
+            fout << "Menge:" << gorceries.at(i).amount.get() << std::endl;
+            fout << "Ablaufdatum: " << gorceries.at(i).getExpireDateString() << std::endl;
+            fout << std::endl;
+        }
+    }
+    fout.close();
 }

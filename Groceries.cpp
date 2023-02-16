@@ -9,7 +9,6 @@ Gorceries::Gorceries(std::string iname, int am, std::tm expDate) {
     expireDate = expDate;
 }
 
-
 std::string Gorceries::getExpireDateString() {
     int day = expireDate.tm_mday;
     int month = expireDate.tm_mon+1;
@@ -20,6 +19,5 @@ std::string Gorceries::getExpireDateString() {
 }
 
 std::chrono::system_clock::time_point Gorceries::getExpireDate() {
-    
     return std::chrono::system_clock::from_time_t(std::mktime(&expireDate));
 };
