@@ -1,0 +1,220 @@
+--Nicht verderbliche Produkte--
+
+Produkt: Druckerapier
+Anzahl: 941
+
+Produkt: Toilettenpapier
+Anzahl: 2151
+
+Produkt: Kerzen
+Anzahl: 3585
+
+Produkt: Batterien
+Anzahl: 1703
+
+Produkt: Geschirrspueltaps
+Anzahl: 1624
+
+
+--Verderbliche Produkte--
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 3.6.1983645700
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 13.1.188577673
+
+Produkt: Fanta
+Anzahl: 0
+Haltbar bis: 13.1.188577673
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 25.2.2026
+
+Produkt: Spinat
+Anzahl: 0
+Haltbar bis: 25.2.2026
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 5.12.2024
+
+Produkt: Spinat
+Anzahl: 0
+Haltbar bis: 5.12.2024
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 16.10.2025
+
+Produkt: Spinat
+Anzahl: 0
+Haltbar bis: 16.10.2025
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 8.3.2025
+
+Produkt: Spinat
+Anzahl: 0
+Haltbar bis: 8.3.2025
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 15.6.2024
+
+Produkt: Spinat
+Anzahl: 0
+Haltbar bis: 15.6.2024
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 22.3.2025
+
+Produkt: Fisch
+Anzahl: 0
+Haltbar bis: 22.3.2025
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 2.10.2024
+
+Produkt: Spinat
+Anzahl: 0
+Haltbar bis: 2.10.2024
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 23.1.2024
+
+Produkt: Fisch
+Anzahl: 0
+Haltbar bis: 23.1.2024
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 28.4.2025
+
+Produkt: Spinat
+Anzahl: 0
+Haltbar bis: 28.4.2025
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 24.7.2025
+
+Produkt: Brot
+Anzahl: 0
+Haltbar bis: 24.7.2025
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 20.1.2024
+
+Produkt: Fisch
+Anzahl: 0
+Haltbar bis: 20.1.2024
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 26.5.2025
+
+Produkt: Fanta
+Anzahl: 0
+Haltbar bis: 26.5.2025
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 1.5.2025
+
+Produkt: Fanta
+Anzahl: 0
+Haltbar bis: 1.5.2025
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 13.2.2024
+
+Produkt: Spinat
+Anzahl: 0
+Haltbar bis: 13.2.2024
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 15.10.2025
+
+Produkt: Äpfel
+Anzahl: 0
+Haltbar bis: 15.10.2025
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 11.10.2024
+
+Produkt: Fisch
+Anzahl: 0
+Haltbar bis: 11.10.2024
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 16.9.2024
+
+Produkt: Äpfel
+Anzahl: 0
+Haltbar bis: 16.9.2024
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 10.10.2025
+
+Produkt: Brot
+Anzahl: 0
+Haltbar bis: 10.10.2025
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 22.2.2025
+
+Produkt: Brot
+Anzahl: 0
+Haltbar bis: 22.2.2025
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 9.8.2025
+
+Produkt: Brot
+Anzahl: 0
+Haltbar bis: 9.8.2025
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 24.4.2024
+
+Produkt: Äpfel
+Anzahl: 0
+Haltbar bis: 24.4.2024
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 4.2.2024
+
+Produkt: Bananen
+Anzahl: 0
+Haltbar bis: 4.2.2024
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 18.8.2024
+
+Produkt: Brot
+Anzahl: 0
+Haltbar bis: 18.8.2024
+
+Produkt: 
+Anzahl: 0
+Haltbar bis: 5.10.2025
+

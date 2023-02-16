@@ -22,6 +22,7 @@ void checkToEat();
 void checkAmountLow();
 void readSignalAmount();
 void reWriteSignalAsNew();
+void exit();
 std::chrono::system_clock::time_point today;
 std::vector<Products> prodcuts;
 std::vector<Gorceries> gorceries;
@@ -786,7 +787,6 @@ void exit() {
     std::ofstream fout;
     fout.open("data.txt");
     if(prodcuts.size() != 0) {
-        fout << std::endl;
         for (size_t i = 0; i < prodcuts.size(); i++) {
             fout << "Name: " << prodcuts.at(i).getName() << std::endl;
             fout << "Menge: " << prodcuts.at(i).amount.get() << std::endl;
@@ -795,10 +795,9 @@ void exit() {
         };
     }
     if(gorceries.size() != 0) {
-        fout << std::endl;
         for (long unsigned int i = 0; i < gorceries.size(); i++) {
             fout << "Name: " << gorceries.at(i).getName() << std::endl;
-            fout << "Menge:" << gorceries.at(i).amount.get() << std::endl;
+            fout << "Menge: " << gorceries.at(i).amount.get() << std::endl;
             fout << "Ablaufdatum: " << gorceries.at(i).getExpireDateString() << std::endl;
             fout << std::endl;
         }

@@ -1,106 +1,26 @@
 Name: Druckerapier
-Menge: 557
+Menge: 941
 Ablaufdatum: keines
 
 Name: Toilettenpapier
-Menge: 911
-Ablaufdatum: keines
-
-Name: Toilettenpapier
-Menge: 129
+Menge: 2151
 Ablaufdatum: keines
 
 Name: Kerzen
-Menge: 389
-Ablaufdatum: keines
-
-Name: Kerzen
-Menge: 27
-Ablaufdatum: keines
-
-Name: Toilettenpapier
-Menge: 80
+Menge: 3585
 Ablaufdatum: keines
 
 Name: Batterien
-Menge: 554
-Ablaufdatum: keines
-
-Name: Kerzen
-Menge: 959
-Ablaufdatum: keines
-
-Name: Kerzen
-Menge: 291
+Menge: 1703
 Ablaufdatum: keines
 
 Name: Geschirrspueltaps
-Menge: 830
-Ablaufdatum: keines
-
-Name: Toilettenpapier
-Menge: 21
-Ablaufdatum: keines
-
-Name: Kerzen
-Menge: 690
-Ablaufdatum: keines
-
-Name: Toilettenpapier
-Menge: 710
-Ablaufdatum: keines
-
-Name: Batterien
-Menge: 432
-Ablaufdatum: keines
-
-Name: Druckerapier
-Menge: 151
-Ablaufdatum: keines
-
-Name: Geschirrspueltaps
-Menge: 794
-Ablaufdatum: keines
-
-Name: Kerzen
-Menge: 764
-Ablaufdatum: keines
-
-Name: Kerzen
-Menge: 213
-Ablaufdatum: keines
-
-Name: Kerzen
-Menge: 252
-Ablaufdatum: keines
-
-Name: Druckerapier
-Menge: 23
-Ablaufdatum: keines
-
-Name: Druckerapier
-Menge: 210
-Ablaufdatum: keines
-
-Name: Toilettenpapier
-Menge: 212
-Ablaufdatum: keines
-
-Name: Toilettenpapier
-Menge: 88
-Ablaufdatum: keines
-
-Name: Batterien
-Menge: 150
-Ablaufdatum: keines
-
-Name: Batterien
-Menge: 567
+Menge: 1624
 Ablaufdatum: keines
 
 Name: Fanta
 Menge: 711
-Ablaufdatum: 25.26.2024
+Ablaufdatum: 25.2.2026
 
 Name: Spinat
 Menge: 843
@@ -108,11 +28,11 @@ Ablaufdatum: 5.12.2024
 
 Name: Spinat
 Menge: 313
-Ablaufdatum: 16.22.2024
+Ablaufdatum: 16.10.2025
 
 Name: Spinat
 Menge: 606
-Ablaufdatum: 8.15.2024
+Ablaufdatum: 8.3.2025
 
 Name: Spinat
 Menge: 361
@@ -120,7 +40,7 @@ Ablaufdatum: 15.6.2024
 
 Name: Spinat
 Menge: 712
-Ablaufdatum: 22.15.2024
+Ablaufdatum: 22.3.2025
 
 Name: Fisch
 Menge: 402
@@ -132,11 +52,11 @@ Ablaufdatum: 23.1.2024
 
 Name: Fisch
 Menge: 35
-Ablaufdatum: 28.16.2024
+Ablaufdatum: 28.4.2025
 
 Name: Spinat
 Menge: 679
-Ablaufdatum: 24.19.2024
+Ablaufdatum: 24.7.2025
 
 Name: Brot
 Menge: 586
@@ -144,11 +64,11 @@ Ablaufdatum: 20.1.2024
 
 Name: Fisch
 Menge: 788
-Ablaufdatum: 26.17.2024
+Ablaufdatum: 26.5.2025
 
 Name: Fanta
 Menge: 741
-Ablaufdatum: 1.17.2024
+Ablaufdatum: 1.5.2025
 
 Name: Fanta
 Menge: 266
@@ -156,7 +76,7 @@ Ablaufdatum: 13.2.2024
 
 Name: Spinat
 Menge: 259
-Ablaufdatum: 15.22.2024
+Ablaufdatum: 15.10.2025
 
 Name: Äpfel
 Menge: 10
@@ -168,15 +88,15 @@ Ablaufdatum: 16.9.2024
 
 Name: Äpfel
 Menge: 302
-Ablaufdatum: 10.22.2024
+Ablaufdatum: 10.10.2025
 
 Name: Brot
 Menge: 509
-Ablaufdatum: 22.14.2024
+Ablaufdatum: 22.2.2025
 
 Name: Brot
 Menge: 239
-Ablaufdatum: 9.20.2024
+Ablaufdatum: 9.8.2025
 
 Name: Brot
 Menge: 677
@@ -196,5 +116,5 @@ Ablaufdatum: 18.8.2024
 
 Name: Brot
 Menge: 749
-Ablaufdatum: 5.22.2024
+Ablaufdatum: 5.10.2025
 
